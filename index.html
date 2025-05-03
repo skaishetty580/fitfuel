@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" crossorigin="anonymous"></script>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  function drawMacroChart(protein, fat, carbs) {
+    const ctx = document.getElementById('macroChart').getContext('2d');
+    if (window.macroPieChart) {
+      window.macroPieChart.destroy();
+    }
+    window.macroPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Protein', 'Fat', 'Carbohydrates'],
+        datasets: [{
+          data: [protein, fat, carbs],
+          backgroundColor: ['#42a5f5', '#66bb6a', '#ffca28']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          title: {
+            display: true,
+            text: 'Macronutrient Split (grams)'
+          }
+        }
+      }
+    });
+  }
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Daily Calorie Calculator | FitFuel</title>
+  <meta name="keywords" content="calorie calculator, daily calorie needs, fitness calculator, TDEE, weight loss, health tools">
+  <meta name="author" content="FitFuel">
+  <meta property="og:title" content="Daily Calorie Needs Calculator | FitFuel">
+  <meta property="og:description" content="Calculate your daily calorie needs based on age, weight, height, and activity level. Optimize your health goals.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://yourdomain.com/images/fitfuel-preview.png">
+  <meta property="og:url" content="https://yourdomain.com/calorie-calculator">
+  <meta name="description" content="Calculate your daily calorie needs based on age, gender, weight, height, and activity level. Ideal for fitness and diet planning.">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #fff);
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      color: #0d47a1;
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      color: #1565c0;
+      margin-top: 1.5rem;
+    }
+    input, select, button {
+      font-size: 1rem;
+      padding: 0.6rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0d47a1;
+    }
+    .section {
+      margin-top: 2rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .affiliate-box {
+      background: #e8f5e9;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-left: 5px solid #388e3c;
+    }
+  </style>
+</head>
+<body>
+<!-- div id="resultsForPDF">
+  $1
+  <div style="text-align: center; margin-bottom: 1rem;">
+    <h1 style="margin: 0; font-size: 2rem; color: #0d47a1; font-weight: bold;">FitFuel</h1>
+    <p style="font-size: 0.9rem; color: #555;">Your personalized calorie & hydration dashboard</p>
+  </div -->
+  <!-- h1 style="color: #0d47a1; font-size: 1.8rem; margin-bottom: 0.5rem;">FitFuel Summary Report</h1 -->
+  <!--p style="font-size: 0.95rem; color: #444; margin-bottom: 1.5rem;">Your personalized calorie, macro, and hydration guide based on the data you entered.</p -->
+    <!-- h2 style="color: #0d47a1;">FitFuel Calorie & Hydration Summary</h2 -->
+    <!-- div id="pdfContent"></div -->
+  <!--footer style="margin-top: 2rem; text-align: center; font-size: 0.8rem; color: #888; border-top: 1px solid #ddd; padding-top: 1rem;">
+  &copy; 2025 FitFuel. All rights reserved.
+</footer -->
+
+<!--ins class="adsbygoogle"
+     style="display:block; text-align:center; margin-bottom: 1rem;"
+     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+     data-ad-slot="1234567890"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script -->
+
+<div style="text-align: center; margin-bottom: 1rem;">
+  <h1 style="margin: 0; font-size: 2.2rem; color: #0d47a1; font-weight: bold; font-family: 'Segoe UI', sans-serif;">FitFuel</h1>
+  <p style="font-size: 1rem; color: #555; margin: 0.2rem 0 0;">Your personalized calorie & hydration dashboard</p>
+</div>
+<h1>Daily Calorie Needs Calculator</h1>
+  
+    <p>Enter your details to estimate how many calories you need to maintain your current weight:</p>
+    <label>Age:</label>
+    <input type="number" id="age">
+    <label>Gender:</label>
+    <select id="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+    <label>Weight (kg):</label>
+    <input type="number" id="weight">
+    <label>Height (cm):</label>
+    <input type="number" id="height">
+    <label>Activity Level:</label>
+<select id="activity">
+  <option value="1.2">Sedentary (little or no exercise)</option>
+  <option value="1.375">Lightly active (light exercise 1–3 days/week)</option>
+  <option value="1.55">Moderately active (moderate exercise 3–5 days/week)</option>
+  <option value="1.725">Very active (hard exercise 6–7 days/week)</option>
+  <option value="1.9">Extra active (very hard exercise, physical job)</option>
+</select>
+<!--div style="font-size: 0.9rem; color: #444; margin-bottom: 1rem;">
+  <strong>Activity Level explained:</strong>
+  <ul style="margin-top: 0.5rem; padding-left: 1rem;">
+    <li><strong>Sedentary:</strong> Little or no exercise</li>
+    <li><strong>Lightly active:</strong> Light exercise 1–3 days/week</li>
+    <li><strong>Moderately active:</strong> Moderate exercise 3–5 days/week</li>
+    <li><strong>Very active:</strong> Hard exercise 6–7 days/week</li>
+    <li><strong>Extra active:</strong> Physical job or intense training</li>
+  </ul>
+</div -->
+
+<label>Fitness Goal:</label>
+<select id="goal">
+  <option value="balanced">Balanced (P30/F25/C45)</option>
+  <option value="keto">Keto (P25/F70/C5)</option>
+  <option value="muscle">Muscle Gain (P35/F25/C40)</option>
+  <option value="weightloss">Weight Loss (P40/F30/C30)</option>
+</select>
+<!--div style="font-size: 0.9rem; color: #444; margin-bottom: 1rem;">
+  <strong>Fitness Goal explained:</strong>
+  <ul style="margin-top: 0.5rem; padding-left: 1rem;">
+    <li><strong>Balanced:</strong> 30% protein, 25% fat, 45% carbs</li>
+    <li><strong>Keto:</strong> Low-carb, high-fat (5% carbs, 70% fat)</li>
+    <li><strong>Muscle Gain:</strong> Higher protein and carbs to support growth</li>
+    <li><strong>Weight Loss:</strong> Higher protein, moderate fat, fewer carbs</li>
+  </ul>
+</div-->
+
+<button onclick="calculateCalories()">Calculate</button>
+    <h2>Your Result:</h2>
+    <p id="result"></p>
+<h2>Your Macronutrient Breakdown:</h2>
+<ul id="macros" style="line-height: 1.6;"></ul>
+<canvas id="macroChart" width="400" height="400" style="max-width: 400px; margin: 2rem auto; display: block;"></canvas>
+
+<h2>Your Daily Hydration Needs:</h2>
+<p id="hydrationResult" style="font-size: 1.1rem; margin-bottom: 1rem;"></p>
+<p style="font-size: 0.95rem; color: #555;">Note: Your water needs increase with higher temperatures and more intense exercise. Proper hydration supports energy, digestion, and cognitive performance. Always listen to your body and drink more water if you feel thirsty or sweat heavily.</p>
+<label>Climate:</label>
+<select id="climate">
+  <option value="normal">Normal</option>
+  <option value="hot">Hot Climate</option>
+</select>
+<label>Exercise Duration (minutes/day):</label>
+<input type="number" id="exerciseMinutes" placeholder="e.g. 30">
+  <!-- Embedded SEO Blog Article -->
+
+<details class="section" style="background: #e3f2fd; border-left: 5px solid #2196f3;">
+  <summary><h2>📘 What Does Activity Level Mean?</h2></summary>
+  <p>Your activity level affects how many calories your body needs each day. Select the level that most accurately reflects your typical day:</p>
+  <ul style="padding-left: 1.5rem; line-height: 1.7;">
+    <li><strong>Sedentary (1.2):</strong> You sit most of the day (e.g., desk job, no workouts).</li>
+    <li><strong>Lightly Active (1.375):</strong> Light exercise or walking 1–3 days per week.</li>
+    <li><strong>Moderately Active (1.55):</strong> Moderate workouts 3–5 days per week.</li>
+    <li><strong>Very Active (1.725):</strong> Intense workouts nearly every day or a physically active job.</li>
+    <li><strong>Extra Active (1.9):</strong> Very intense daily training or physical labor (e.g., athletes, construction).</li>
+  </ul>
+</details>
+
+<details class="section" style="background: #fffde7; border-left: 5px solid #fbc02d;">
+  <summary><h2>🎯 Understanding Fitness Goals</h2></summary>
+  <p>Fitness goals guide how your calorie intake is divided into protein, fat, and carbs. Here’s what each plan prioritizes:</p>
+  <ul style="padding-left: 1.5rem; line-height: 1.7;">
+    <li><strong>Balanced:</strong> A general health mix (30% Protein / 25% Fat / 45% Carbs)</li>
+    <li><strong>Keto:</strong> Low-carb, high-fat for ketosis (25% Protein / 70% Fat / 5% Carbs)</li>
+    <li><strong>Muscle Gain:</strong> Extra fuel for muscle growth (35% Protein / 25% Fat / 40% Carbs)</li>
+    <li><strong>Weight Loss:</strong> Higher protein to protect muscle (40% Protein / 30% Fat / 30% Carbs)</li>
+  </ul>
+</details>
+<div class="section" style="margin-top: 2rem; background-color: #fff3e0; border-left: 5px solid #fb8c00;">
+  <h2>📝 How to Calculate Daily Calories for Weight Loss & Muscle Gain</h2>
+  <p><strong>Introduction:</strong> Understanding your daily calorie needs is the first step toward any fitness goal—whether it's shedding fat, gaining muscle, or just staying healthy.</p>
+  <h3>🔍 What Are Calories?</h3>
+  <p>Calories are units of energy your body uses to function. From blinking to lifting weights, every action burns calories.</p>
+  <h3>📊 How to Calculate Daily Calories</h3>
+  <p>Your daily calorie needs are based on:</p>
+  <ul>
+    <li><strong>BMR (Basal Metabolic Rate)</strong> – how many calories you burn at rest</li>
+    <li><strong>Activity Level</strong> – how active you are throughout the day</li>
+  </ul>
+  <p><em>Example:</em> A 30-year-old male, 70 kg, 175 cm tall, moderately active needs about <strong>2,650 calories/day</strong>.</p>
+  <h3>🎯 Calorie Goals by Objective</h3>
+  <table style="width:100%; border-collapse: collapse;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="border:1px solid #ccc; padding: 0.5rem;">Goal</th>
+        <th style="border:1px solid #ccc; padding: 0.5rem;">Adjust from Maintenance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="border:1px solid #ccc; padding: 0.5rem;">Weight Loss</td><td style="border:1px solid #ccc; padding: 0.5rem;">-500 to -750 calories/day</td></tr>
+      <tr><td style="border:1px solid #ccc; padding: 0.5rem;">Muscle Gain</td><td style="border:1px solid #ccc; padding: 0.5rem;">+250 to +500 calories/day</td></tr>
+      <tr><td style="border:1px solid #ccc; padding: 0.5rem;">Maintenance</td><td style="border:1px solid #ccc; padding: 0.5rem;">No change</td></tr>
+    </tbody>
+  </table>
+  <h3>🍽 Sample Meal Plans</h3>
+  <ul>
+    <li><strong>Weight Loss:</strong> High-protein, low-carb meals with lots of fiber</li>
+    <li><strong>Muscle Gain:</strong> Calorie-dense foods, protein shakes, healthy fats</li>
+  </ul>
+  <p><em>Tip:</em> Use our calculator above to find your base number, then adjust accordingly.</p>
+</div>
+
+<!-- Testimonials Section -->
+<div class="section" style="background: #f1f8e9; border-left: 5px solid #7cb342;">
+  <h2>🌟 Success Stories</h2>
+  <div id="testimonial-container" style="font-style: italic;"></div>
+</div>
+<script>
+  const testimonials = [
+    '"Using this calorie calculator helped me lose 15 pounds in 3 months. It’s simple, accurate, and motivating!"<br><strong>- Jenna R.</strong>',
+    '"This tool gave me the clarity I needed to bulk up properly. I finally hit my macros!"<br><strong>- Marcus T.</strong>',
+    '"I recommend this to all my nutrition clients. It\'s fast and extremely reliable."<br><strong>- Coach Leila</strong>'
+  ];
+  let currentTestimonial = 0;
+  const testimonialDiv = document.getElementById("testimonial-container");
+
+  function rotateTestimonial() {
+    testimonialDiv.innerHTML = testimonials[currentTestimonial];
+    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+  }
+  rotateTestimonial();
+  setInterval(rotateTestimonial, 7000);
+</script>
+
+<!-- Bottom Ad -->
+<!--ins class="adsbygoogle"
+     style="display:block; text-align:center; margin: 2rem 0;"
+     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+     data-ad-slot="9876543210"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script -->
+
+<div class="affiliate-box">
+  <h3>🔥 Want to reach your goals faster?</h3>
+  <p>Try our favorite <a href="https://www.example-affiliate-link.com/protein" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/protein')">protein supplements</a> or <a href="https://www.example-affiliate-link.com/mealplans" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/mealplans')">meal plans</a> to support your calorie goals.</p>
+  <p>🧘‍♀️ Optimize your progress with <a href="https://www.example-affiliate-link.com/yogaapp" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/yogaapp')">fitness & yoga apps</a>.</p>
+  <p>🍳 Browse <a href="https://www.example-affiliate-link.com/kitchen" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/kitchen')">kitchen gear</a> for meal prep efficiency.</p>
+  <p>📏 Track results with our favorite <a href="https://www.example-affiliate-link.com/smartscales" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/smartscales')">smart scales & fitness trackers</a>.</p>
+  <p>💧 Stay hydrated with <a href="https://www.example-affiliate-link.com/waterbottle" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/waterbottle')">motivational water bottles</a>.</p>
+  <p>📚 Learn more with <a href="https://www.example-affiliate-link.com/fitnessbooks" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/fitnessbooks')">top-rated fitness books</a>.</p>
+  <p>🧂 Enhance nutrition with <a href="https://www.example-affiliate-link.com/vitamins" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/vitamins')">daily multivitamins</a> and <a href="https://www.example-affiliate-link.com/preworkout" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/preworkout')">pre-workout supplements</a>.</p>
+  <p>🧠 Stay focused using <a href="https://www.example-affiliate-link.com/mindfulness" target="_blank" onclick="trackAffiliateClick('https://www.example-affiliate-link.com/mindfulness')">mindfulness and brain-boosting tools</a>.</p>
+</div>
+
+  <script>
+    function calculateCalories() {
+      const age = parseInt(document.getElementById("age").value);
+      const gender = document.getElementById("gender").value;
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value);
+      const activity = parseFloat(document.getElementById("activity").value);
+
+      if (isNaN(age) || isNaN(weight) || isNaN(height)) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      let bmr;
+      if (gender === "male") {
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+      } else {
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+      }
+
+      const calories = Math.round(bmr * activity);
+      document.getElementById("result").innerText = `You need approximately ${calories} calories/day to maintain your weight.`;
+
+      let p = 0.3, f = 0.25, c = 0.45;
+      const goal = document.getElementById("goal").value;
+      if (goal === "keto") { p = 0.25; f = 0.7; c = 0.05; }
+      if (goal === "muscle") { p = 0.35; f = 0.25; c = 0.4; }
+      if (goal === "weightloss") { p = 0.4; f = 0.3; c = 0.3; }
+
+      const protein = Math.round((calories * p) / 4);
+      const fat = Math.round((calories * f) / 9);
+      const carbs = Math.round((calories * c) / 4);
+
+      document.getElementById("macros").innerHTML = `
+        <li><strong>Protein:</strong> ${protein}g/day (${Math.round(p*100)}%)</li>
+        <li><strong>Fat:</strong> ${fat}g/day (${Math.round(f*100)}%)</li>
+        <li><strong>Carbohydrates:</strong> ${carbs}g/day (${Math.round(c*100)}%)</li>
+      `;
+      drawMacroChart(protein, fat, carbs);
+
+      // Hydration calculation (base 35ml per kg)
+      let hydrationLiters = (weight * 35) / 1000;
+      const climate = document.getElementById("climate").value;
+      const exerciseMinutes = parseFloat(document.getElementById("exerciseMinutes").value);
+      if (climate === "hot") hydrationLiters += 0.5;
+      if (!isNaN(exerciseMinutes)) hydrationLiters += exerciseMinutes * 0.012;
+      document.getElementById("hydrationResult").innerText = `You should drink approximately ${hydrationLiters.toFixed(2)} liters of water per day.`;
+    }
+  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Should I eat the same number of calories every day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "While it's common to maintain a consistent calorie intake, some people cycle their intake based on workout days vs. rest days. Consistency usually supports better tracking and habits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I adjust calories for fat loss or muscle gain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For fat loss, reduce your daily intake by 500–750 calories. For muscle gain, add 250–500 calories per day above maintenance."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate how many calories I need per day?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can calculate your daily calorie needs by determining your Basal Metabolic Rate (BMR) and multiplying it by your activity level. Our calculator does this for you automatically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a good calorie range for weight loss?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A common recommendation is to consume 500–750 fewer calories per day than your maintenance level to safely lose 1–1.5 pounds per week."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is TDEE and why is it important?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TDEE stands for Total Daily Energy Expenditure. It represents the total number of calories you burn per day including activity. It's essential for setting your calorie goals."
+      }
+    }
+  ]
+}
+</script>
+
+</div>
+
+<footer style="margin-top: 3rem; text-align: center; font-size: 0.85rem; color: #555; border-top: 1px solid #ccc; padding-top: 1rem;">
+  <p>&copy; 2025 FitFuel. All rights reserved.</p>
+  <p>
+    <a href="#" onclick="showPolicy('privacy')">Privacy Policy</a> | 
+    <a href="#" onclick="showPolicy('disclaimer')">Disclaimer</a>
+  </p>
+  <div id="policyContent" style="max-width: 700px; margin: 1rem auto; display: none; text-align: left; font-size: 0.9rem; color: #444;"></div>
+</footer>
+<script>
+  function showPolicy(type) {
+    const container = document.getElementById("policyContent");
+    if (type === 'privacy') {
+      container.innerHTML = '<h3>Privacy Policy</h3><p>We do not collect, store, or share your personal data. All calculations are done in your browser and not transmitted to any server.</p>';
+    } else if (type === 'disclaimer') {
+      container.innerHTML = '<h3>Disclaimer</h3><p>This tool is for general informational purposes only and should not replace professional health or dietary advice. Use at your own discretion.</p>';
+    }
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
